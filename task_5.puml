@@ -1,0 +1,75 @@
+@startuml
+!define C4P https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master
+!include C4P/C4_Container.puml
+!includeurl C4P/C4_Person.puml
+!includeurl C4P/C4_ExternalEntity.puml
+!includeurl C4P/C4_System.puml
+
+' Define the external systems and users
+Person_Ext "Пользователь" as User
+ExternalEntity_Ext "Внешние системы\n(Погодные API, облачные сервисы)" as ExternalSystems
+
+' Define the main system boundary
+System_Boundary("Умный дом") {
+    Container "Подключение новых устройств" as DeviceOnboarding
+    Container "Обработка данных с устройств" as DataProcessing
+    Container "Мониторинг и аналитика" as MonitoringAnalytics
+    Container "Управление устройствами" as DeviceManagement
+    Container "Управление пользователями" as UserManagement
+}
+
+' Define subdomains and their contexts inside the system boundary
+System_Boundary("Подключение новых устройств") {
+    Container "Регистрация устройства\n(Привязка и удаление)" as DeviceRegistration
+    Container "Настройка устройства" as DeviceConfiguration
+}
+
+System_Boundary("Обработка данных с устройств") {
+    Container "Сбор данных в реальном времени" as RealTimeDataCollection
+    Container "Агрегация данных" as DataAggregation
+}
+
+System_Boundary("Мониторинг и аналитика") {
+    Container "Выдача данных пользователю" as DataProvision
+    Container "Отчетность" as Reporting
+}
+
+System_Boundary("Управление устройствами") {
+    Container "Управление отоплением" as HeatingControl
+    Container "Управление освещением" as LightingControl
+    Container "Управление безопасностью" as SecurityControl
+}
+
+System_Boundary("Управление пользователями") {
+    Container "Регистрация пользователей" as UserRegistration
+    Container "Нотификации пользователей" as UserNotifications
+}
+
+' Define interactions between users, system components, and external systems
+User --> DeviceManagement : "Управление устройствами"
+User --> UserManagement : "Регистрация/Нотификации"
+User --> MonitoringAnalytics : "Просмотр отчетности"
+User --> DataProvision : "Получение данных"
+User --> DeviceOnboarding : "Подключение новых устройств"
+
+DeviceOnboarding --> DeviceRegistration : "Привязка устройства"
+DeviceOnboarding --> DeviceConfiguration : "Настройка устройств"
+
+DeviceManagement --> HeatingControl : "Управление отоплением"
+DeviceManagement --> LightingControl : "Управление освещением"
+DeviceManagement --> SecurityControl : "Управление безопасностью"
+
+DataProcessing --> RealTimeDataCollection : "Сбор данных с устройств"
+DataProcessing --> DataAggregation : "Агрегация данных"
+
+MonitoringAnalytics --> DataProvision : "Выдача данных"
+MonitoringAnalytics --> Reporting : "Создание отчетности"
+
+UserManagement --> UserRegistration : "Регистрация"
+UserManagement --> UserNotifications : "Отправка уведомлений"
+
+' External systems interactions
+ExternalSystems --> DataProcessing : "Погодные данные"
+ExternalSystems --> MonitoringAnalytics : "Дополнительные данные для аналитики"
+
+@enduml

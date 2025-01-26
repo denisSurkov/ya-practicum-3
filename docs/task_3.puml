@@ -1,0 +1,39 @@
+@startuml
+ entity Client {
+   * id : number
+   --
+   * name: varchar
+   * email : varchar
+   * hashed_password : varchar
+ }
+
+ entity Scenario {
+   * id : uuid
+   --
+   + ownerId: uuid
+   * operations: json
+   * status: boolean
+ }
+
+ entity Device {
+   * id : uuid
+   --
+   * client_id: uuid
+   * device_type: varchar
+   * params: json
+   * status: boolean
+   * ip_address: varchar
+ }
+
+ entity TelemetryMessage {
+   * received_at: date
+   * message_type: varchar
+   * device_id: uuid
+   * params: json
+ }
+
+ Client "1" -> "0..*" Device
+ Device "1" -> "0..*" TelemetryMessage
+ Client "1" -> "0..*" Scenario
+
+ @enduml

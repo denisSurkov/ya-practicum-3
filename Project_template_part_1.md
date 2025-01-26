@@ -80,31 +80,7 @@
 
 ### 5. Визуализация контекста системы — диаграмма С4
 
-
-```plantuml
-@startuml C4_Elements
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-
-Person(personAlias, "Label", "Optional Description")
-Container(containerAlias, "Label", "Technology", "Optional Description")
-System(systemAlias, "Label", "Optional Description")
-
-Rel(personAlias, containerAlias, "Label", "Optional Technology")
-@enduml
-```
-Добавьте сюда диаграмму контекста в модели C4.
-
-Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
-
-```markdown
-[Текст ссылки](URL)
-```
-
-Замените `Текст ссылки` текстом, который хотите использовать для ссылки. Вместо `URL` вставьте адрес, на который должна вести ссылка. Например:
-
-```markdown
-[Посетите Яндекс](https://ya.ru/)
-```
+![Диаграмма контекста C4](task_5.svg)
 
 # Задание 2. Проектирование микросервисной архитектуры
 

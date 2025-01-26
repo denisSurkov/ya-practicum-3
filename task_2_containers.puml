@@ -1,0 +1,66 @@
+@startuml
+!include <C4/C4_Container>
+
+Person(user, "Пользователь", $type="person")
+Person(admin, "Специалист сопровождения", "", $type="person")
+
+System_Boundary(c1, "Теплый дом") {
+    Container(web_app, "Web Application", "Service", "Предоставляет UI для управления ")
+    Container(mobile_app, "Mobile Application", "Flutter", "Предоставляет UI для управления ")
+
+    Container(api_gw_users, "User ApiGateway", "Api Gateway", "Gateway для пользовательских запросов")
+    Container(relay_devices, "Devices Relay", "Message Relay", "Работает с сырыми данным от устройств")
+
+    Container(kafka, "Message broker", "Kafka", "Основной брокер сообщений для асинхронной обработки")
+
+    Container(scenaries, "Scenaries Service", "Service", "Хранит сценарии пользователей, выдает команды в нужное время")
+    Container(scenaries_db, "Scenaries Database", "PostgreSQL")
+
+    Container(device_management, "Device Management Service", "Service")
+
+    Container(users_service, "User Management Service", "Service", "Управляет данными пользователей")
+    Container(user_service_db, "User Database", "PostgreSQL")
+
+    Container(notifications, "Notifications Service", "Service", "Работает с разными поставщиками услуг по отправки уведомлений пользователям")
+
+    Container(analytics, "Analytics Service", "Service", "Обрабатывает данные с устройств, сохраняет данные для мониторинга, последующей аналитики")
+    Container(analytics_prometheus, "Analytics Database", "Prometheus")
+
+    Container(support_service, "Support Service", "Service", "Сервис поддержки")
+}
+
+System_Ext(ext_devices, "Пользовательские девайсы", "Всевозможные устройства, установленные в контуре пользователя")
+Rel(ext_devices, relay_devices, "Отправляет данные с устройств")
+Rel(relay_devices, kafka, "Публикует обогащенные данные для обработки другими сервисами")
+Rel(device_management, ext_devices, "Управляет устройствами")
+
+System_Ext(ext_notification, "Системы уведомлений", "Поставщики услуг SMS уведомлений, Email, ...")
+Rel(notifications, ext_notification, "Отправляет запросы на отправку уведомлений пользователй по разным каналам")
+Rel(kafka, notifications, "Считывает запросы")
+Rel(ext_notification, user, "Уведомляет")
+
+Rel(users_service, user_service_db, "Сохраняет информацию о пользователе")
+
+Rel(user, mobile_app, "Управляет своими устройствами, добавляет устройства, управляет своим профилем")
+Rel(user, web_app, "Управляет своими устройствами, добавляет устройства, управляет своим профилем")
+
+Rel(mobile_app, api_gw_users, "Делает запросы к разным сервисам")
+Rel(web_app, api_gw_users, "Делает запросы к разным сервисам")
+Rel(api_gw_users, analytics, "Отправляет запросы связанные с аналитикой")
+Rel(api_gw_users, scenaries, "Отправляет запросы связанные с сервисом сценариев")
+Rel(api_gw_users, users_service, "Отправляет запросы связанные с сервисом пользователями")
+
+Rel(scenaries, kafka, "Отправляет команды для девайсов, запросы в систему уведомлений и др.")
+Rel(scenaries, scenaries_db, "Сохраняет сценарии пользователей")
+
+Rel(admin, support_service, "Управляет системой в случае неполадок, просматривает системную информацию для поддержки пользователей")
+Rel(support_service, kafka, "Отправляет команды для других сервисов")
+
+Rel(kafka, device_management, "Считывает команды для устройств")
+
+
+Rel(analytics, analytics_prometheus, "Сохраняет данные с устройств")
+Rel(analytics, kafka, "Считывает события с устройств")
+
+SHOW_LEGEND()
+@enduml

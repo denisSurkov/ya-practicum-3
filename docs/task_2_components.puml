@@ -1,0 +1,22 @@
+@startuml
+!include <C4/C4_Container>
+
+Boundary(b, "Scenaries Service") {
+	Container(api, "API")
+	Container(scenary_repository, "Scenaries Repository")
+	Container(publisher, "Publisher")
+	Container(scheduler, "Scheduler")
+	Container(service, "Scenaries Service")
+}
+
+Container(database, "Scenaries Database", "Postgres")
+Container(kafka, "Message broker", "Kafka")
+
+Rel(scenary_repository, database, "Записывает и считывает")
+Rel(publisher, kafka, "Отправляет команды для сервиса управления девайсами")
+Rel(scheduler, service, "Выполняет сценарий в зависимости от даты")
+Rel(api, service, "Получает команды от пользователей")
+Rel(service, scenary_repository, "Сохраняет данные о сценарии")
+Rel(publisher, service, "Обновляет данные о переодических задачах")
+
+@enduml

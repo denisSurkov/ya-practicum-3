@@ -1,0 +1,15 @@
+@startuml
+!include <C4/C4_Container>
+
+Person(personAlias, "Пользователь", $type="person")
+Person(admin, "Специалист", "", $type="person")
+System(system, "Теплый дом", "Система по управлению отоплением в доме", $type="Software system")
+System_Ext(sensors, "Система отопления", "Отопление, установленное у пользователя", $type="Embedded")
+
+Rel(personAlias, system, "Устанавливает заданную температуру, смотрит показатели температуры", "HTTP / REST")
+Rel(admin, sensors, "Настраивает для работы с Теплым Домом", "вручную")
+Rel(sensors, system, "Обновляет показания температуры", "HTTP / REST")
+Rel(system, sensors, "Задает нужный уровень температуры", "HTTP / REST")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+ !include <C4/C4_Container>
+
+ interface ScenariesService {
+   +List<Scenario> getScenaries(Uuid: clientId)
+   +void saveScenario(Scenario: scenario)
+   +void removeScenario(Uuid: scenarioId)
+   +void executeScenario(Uuid: scenatioId)
+ }
+
+ interface Scheduler {
+ 	+void run()
+ }
+
+ interface Publisher {
+ 	+void publishCommand()
+ }
+
+ class Scenario {
+   + id : Uuid
+   + commands: Json
+   + status: Boolean
+   removed: Optinoal<DateTime>
+ }
+
+ class Command {
+	+ deviceId: Uuid
+	+ command: Json
+ }
+
+@enduml

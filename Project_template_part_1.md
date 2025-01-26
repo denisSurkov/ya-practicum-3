@@ -77,10 +77,21 @@
 - Сложности с деплоем новых версий — если поменяли только часть приложения, например, добавили поддержку нового устройства, необходимо передеплоить весь сервис. Деплоим весь сервис сразу — можем получить проблемы со стабильностью;
 - Следуя легенде, проект будет активно расти. Работа нескольких команд с одним проектом может вызывать трудности с релизами, git конфликатами. 
 
+
 ### 5. Визуализация контекста системы — диаграмма С4
 
 
+```plantuml
+@startuml C4_Elements
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
+Person(personAlias, "Label", "Optional Description")
+Container(containerAlias, "Label", "Technology", "Optional Description")
+System(systemAlias, "Label", "Optional Description")
+
+Rel(personAlias, containerAlias, "Label", "Optional Technology")
+@enduml
+```
 Добавьте сюда диаграмму контекста в модели C4.
 
 Чтобы добавить ссылку в файл Readme.md, нужно использовать синтаксис Markdown. Это делают так:
